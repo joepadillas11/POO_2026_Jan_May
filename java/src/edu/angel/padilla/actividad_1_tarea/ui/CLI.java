@@ -7,6 +7,7 @@ import edu.angel.padilla.actividad_1_tarea.data.Ticket;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class CLI {
 
@@ -21,31 +22,57 @@ public class CLI {
         System.out.print("Ingrese nombre del cliente: ");
         String cliente = scanner.nextLine();
 
-        System.out.println("\nAutos disponibles:");
-        for (int i = 0; i < autos.size(); i++) {
-            System.out.println((i + 1) + ". " + autos.get(i).getMarca() + " " + autos.get(i).getModelo());
-        }
+        // Mostrar marcas disponibles
+        System.out.println("\nMarcas disponibles:");
+        autos.stream()
+                .map(Auto::getMarca)
+                .distinct()
+                .forEach(m -> System.out.println("- " + m));
 
-        int opcion = -1;
+        List<Auto> autosFiltrados;
+
         while (true) {
-            System.out.print("\nSeleccione un auto (1 - " + autos.size() + "): ");
+            System.out.print("\nIngrese una marca válida: ");
+            String marca = scanner.nextLine();
 
-            if (!scanner.hasNextInt()) {
-                System.out.println("Error: Debe ingresar un número válido entre 1 y " + autos.size());
-                scanner.next(); // descarta entrada inválida
-                continue;
-            }
+            autosFiltrados = autos.stream()
+                    .filter(a -> a.getMarca().equalsIgnoreCase(marca))
+                    .collect(Collectors.toList());
 
-            opcion = scanner.nextInt();
-
-            if (opcion < 1 || opcion > autos.size()) {
-                System.out.println("Opción fuera de rango. Valores válidos: 1 a " + autos.size());
+            if (autosFiltrados.isEmpty()) {
+                System.out.println("Marca no válida. Intente con alguna de las mostradas anteriormente.");
             } else {
                 break;
             }
         }
 
-        Auto seleccionado = autos.get(opcion - 1);
+        // Mostrar autos de esa marca
+        System.out.println("\nAutos disponibles de esa marca:");
+        for (int i = 0; i < autosFiltrados.size(); i++) {
+            Auto a = autosFiltrados.get(i);
+            System.out.println((i + 1) + ". " + a.getModelo() + " - $" + a.getPrecio());
+        }
+
+        int opcion;
+        while (true) {
+            System.out.print("\nSeleccione un auto (1 - " + autosFiltrados.size() + "): ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("Debe ingresar un número.");
+                scanner.next();
+                continue;
+            }
+
+            opcion = scanner.nextInt();
+
+            if (opcion < 1 || opcion > autosFiltrados.size()) {
+                System.out.println("Opción fuera de rango.");
+            } else {
+                break;
+            }
+        }
+
+        Auto seleccionado = autosFiltrados.get(opcion - 1);
         Ticket ticket = ventaProcess.generarVenta(cliente, seleccionado);
 
         System.out.println(ticket.getTicketInfo());
