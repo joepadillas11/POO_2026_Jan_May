@@ -8,6 +8,8 @@ import edu.angel.padilla.actividad_1_tarea.data.Ticket;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
+
 
 public class CLI {
 
@@ -18,6 +20,11 @@ public class CLI {
     public void iniciar() {
         autoProcess.buildList();
         List<Auto> autos = autoProcess.getAutos();
+        List<Ticket> tickets = new ArrayList<>();
+        boolean continuarPrograma = true;
+
+        while (continuarPrograma) {
+
 
         System.out.print("Ingrese nombre del cliente: ");
         String cliente = scanner.nextLine();
@@ -65,6 +72,7 @@ public class CLI {
 
             opcion = scanner.nextInt();
 
+            scanner.nextLine();
             if (opcion < 1 || opcion > autosFiltrados.size()) {
                 System.out.println("Opción fuera de rango.");
             } else {
@@ -76,5 +84,24 @@ public class CLI {
         Ticket ticket = ventaProcess.generarVenta(cliente, seleccionado);
 
         System.out.println(ticket.getTicketInfo());
+        tickets.add(ticket);
+
+        System.out.print("\n¿Desea comprar otro vehículo? (s/n): ");
+        String respuesta = scanner.nextLine();
+
+            if (!respuesta.equalsIgnoreCase("s")) {
+                continuarPrograma = false;
+            }
+
+        }
+
+        System.out.println("\n========= RESUMEN DE COMPRAS =========");
+        for (Ticket t : tickets) {
+            System.out.println(t.getTicketInfo());
+        }
+
+        System.out.println("\nFelicidades por tu compra");
     }
+
 }
+
