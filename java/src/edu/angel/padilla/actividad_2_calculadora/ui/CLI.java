@@ -91,7 +91,7 @@ public class CLI {
                     break;
 
                 case 6:
-                    System.out.print("\nBase: ");
+                    System.out.print("\nOperandor: ");
                     a = sc.nextInt();
                     System.out.print("\nExponente: ");
                     b = sc.nextInt();
