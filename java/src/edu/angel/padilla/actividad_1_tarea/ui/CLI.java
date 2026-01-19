@@ -24,8 +24,7 @@ public class CLI {
         boolean continuarPrograma = true;
 
         while (continuarPrograma) {
-
-
+            
         System.out.print("Ingrese nombre del cliente: ");
         String cliente = scanner.nextLine();
 
@@ -52,14 +51,12 @@ public class CLI {
                 break;
             }
         }
-
         // Mostrar autos de esa marca
         System.out.println("\nAutos disponibles de esa marca:");
         for (int i = 0; i < autosFiltrados.size(); i++) {
             Auto a = autosFiltrados.get(i);
             System.out.println((i + 1) + ". " + a.getModelo() + " - $" + a.getPrecio());
         }
-
         int opcion;
         while (true) {
             System.out.print("\nSeleccione un auto (1 - " + autosFiltrados.size() + "): ");
@@ -69,7 +66,6 @@ public class CLI {
                 scanner.next();
                 continue;
             }
-
             opcion = scanner.nextInt();
 
             scanner.nextLine();
@@ -79,7 +75,6 @@ public class CLI {
                 break;
             }
         }
-
         Auto seleccionado = autosFiltrados.get(opcion - 1);
         Ticket ticket = ventaProcess.generarVenta(cliente, seleccionado);
 
@@ -92,16 +87,12 @@ public class CLI {
             if (!respuesta.equalsIgnoreCase("s")) {
                 continuarPrograma = false;
             }
-
         }
-
         System.out.println("\n========= RESUMEN DE COMPRAS =========");
         for (Ticket t : tickets) {
             System.out.println(t.getTicketInfo());
         }
-
         System.out.println("\nFelicidades por tu compra");
     }
-
 }
 
